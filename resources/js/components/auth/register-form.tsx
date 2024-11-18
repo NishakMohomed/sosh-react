@@ -1,6 +1,5 @@
 import { Link, useForm } from '@inertiajs/react';
 
-import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,43 +13,52 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { FormEventHandler } from 'react';
 
-export function LoginForm({
-    status,
-    canResetPassword,
-}: {
-    status?: string;
-    canResetPassword: boolean;
-}) {
+export function RegisterForm() {
     const { data, setData, post, processing, errors, reset } = useForm({
+        name: '',
         email: '',
         password: '',
-        remember: false,
+        password_confirmation: '',
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route('login'), {
-            onFinish: () => reset('password'),
+        post(route('register'), {
+            onFinish: () => reset('password', 'password_confirmation'),
         });
     };
 
     return (
         <Card className="mx-auto max-w-sm">
-            {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    {status}
-                </div>
-            )}
             <CardHeader>
-                <CardTitle className="text-2xl">Login</CardTitle>
+                <CardTitle className="text-2xl">Sign up</CardTitle>
                 <CardDescription>
-                    Enter your email below to login to your account
+                    Enter your details below to sign up for an account
                 </CardDescription>
             </CardHeader>
             <CardContent>
                 <form onSubmit={submit}>
                     <div className="grid gap-4">
+                        <div className="grid gap-2">
+                            <Label htmlFor="name">Name</Label>
+                            <Input
+                                id="name"
+                                type="text"
+                                name="name"
+                                value={data.name}
+                                placeholder="Jhon Doe"
+                                autoComplete="name"
+                                onChange={(e) =>
+                                    setData('name', e.target.value)
+                                }
+                                required
+                            />
+                            <InputError
+                                message={errors.name}
+                                className="mt-2"
+                            />
+                        </div>
                         <div className="grid gap-2">
                             <Label htmlFor="email">Email</Label>
                             <Input
@@ -70,17 +78,7 @@ export function LoginForm({
                             />
                         </div>
                         <div className="grid gap-2">
-                            <div className="flex items-center">
-                                <Label htmlFor="password">Password</Label>
-                                {canResetPassword && (
-                                    <Link
-                                        href={route('password.request')}
-                                        className="ml-auto inline-block text-sm underline"
-                                    >
-                                        Forgot your password?
-                                    </Link>
-                                )}
-                            </div>
+                            <Label htmlFor="password">Password</Label>
                             <Input
                                 id="password"
                                 type="password"
@@ -98,29 +96,34 @@ export function LoginForm({
                             />
                         </div>
                         <div className="grid gap-2">
-                            <div className="flex items-center space-x-2">
-                                <Checkbox
-                                    id="remember"
-                                    name="remember"
-                                    checked={data.remember}
-                                    onChange={(e) =>
-                                        setData('remember', e.target.checked)
-                                    }
-                                />
-                                <label
-                                    htmlFor="remember"
-                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                >
-                                    Remember me
-                                </label>
-                            </div>
+                            <Label htmlFor="password_confirmation">
+                                Confirm Password
+                            </Label>
+                            <Input
+                                id="password_confirmation"
+                                type="password"
+                                name="password_confirmation"
+                                value={data.password_confirmation}
+                                autoComplete="new-password"
+                                onChange={(e) =>
+                                    setData(
+                                        'password_confirmation',
+                                        e.target.value,
+                                    )
+                                }
+                                required
+                            />
+                            <InputError
+                                message={errors.password_confirmation}
+                                className="mt-2"
+                            />
                         </div>
                         <Button
                             type="submit"
                             className="w-full"
                             disabled={processing}
                         >
-                            Login
+                            Create account
                         </Button>
                         {/* <Button
                             variant="outline"
@@ -131,9 +134,9 @@ export function LoginForm({
                         </Button> */}
                     </div>
                     <div className="mt-4 text-center text-sm">
-                        Don&apos;t have an account?{' '}
-                        <Link href={route('register')} className="underline">
-                            Sign up
+                        Already have an account?{' '}
+                        <Link href={route('login')} className="underline">
+                            Sign in
                         </Link>
                     </div>
                 </form>
