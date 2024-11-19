@@ -5,8 +5,6 @@ import {
     Command,
     Home,
     MessageCircleQuestion,
-    Search,
-    Settings2,
     Sparkles,
 } from 'lucide-react';
 import * as React from 'react';
@@ -27,19 +25,14 @@ import {
 const data = {
     navMain: [
         {
-            title: 'Search',
-            url: '#',
-            icon: Search,
-        },
-        {
             title: 'Home',
-            url: '#',
+            url: '/dashboard',
             icon: Home,
             isActive: true,
         },
         {
-            title: 'Generate Post',
-            url: '#',
+            title: 'Craft Post',
+            url: '/craft-post',
             icon: Sparkles,
         },
     ],
@@ -48,11 +41,6 @@ const data = {
             title: 'Templates',
             url: '#',
             icon: Blocks,
-        },
-        {
-            title: 'Settings',
-            url: '#',
-            icon: Settings2,
         },
         {
             title: 'Help',

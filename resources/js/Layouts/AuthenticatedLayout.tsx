@@ -1,5 +1,6 @@
+import { AppHeader } from '@/components/app-header';
 import { AppSidebar } from '@/components/app-sidebar';
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { usePage } from '@inertiajs/react';
 import { PropsWithChildren, ReactNode } from 'react';
 
@@ -12,10 +13,10 @@ export default function Authenticated({
     return (
         <SidebarProvider>
             <AppSidebar />
-            <main>
-                <SidebarTrigger />
-                {children}
-            </main>
+            <SidebarInset>
+                <AppHeader />
+                <main>{children}</main>
+            </SidebarInset>
         </SidebarProvider>
     );
 }
