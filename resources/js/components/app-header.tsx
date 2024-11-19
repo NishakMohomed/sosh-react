@@ -1,3 +1,4 @@
+import { ModeToggle } from '@/components/mode-toggle';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -18,7 +19,8 @@ export const AppHeader = () => {
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
-            <div className="ml-auto">
+            <div className="ml-auto flex items-center gap-4">
+                <ModeToggle />
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button
@@ -39,7 +41,12 @@ export const AppHeader = () => {
                         <DropdownMenuItem>Billing</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
-                            <Link href="/logout" method="post">
+                            <Link
+                                href="/logout"
+                                method="post"
+                                as="button"
+                                className="w-full"
+                            >
                                 Logout
                             </Link>
                         </DropdownMenuItem>
