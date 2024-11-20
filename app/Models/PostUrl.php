@@ -33,4 +33,20 @@ class PostUrl extends Model
     {
         return $this->hasMany(PostImage::class);
     }
+
+    /**
+     * Get the scraped product images for the post url.
+     */
+    public function productImages(): HasMany
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+
+    /**
+     * Get the background removed product images for the post url.
+     */
+    public function bgRemovedProductImages(): HasMany
+    {
+        return $this->hasMany(BgRemovedProductImage::class);
+    }
 }
