@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PostUrl extends Model
 {
@@ -23,5 +24,13 @@ class PostUrl extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the crafted post images for the post url.
+     */
+    public function postImages(): HasMany
+    {
+        return $this->hasMany(PostImage::class);
     }
 }
