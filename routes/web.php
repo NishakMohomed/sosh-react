@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
 //  Dashboard routes
 Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/craft-post', [CraftPostController::class, 'index'])->name('craft-post.index');
+    Route::post('/craft-post', [CraftPostController::class, 'store'])->name('craft-post.store');
 });
 
 require __DIR__.'/auth.php';

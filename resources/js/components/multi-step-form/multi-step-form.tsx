@@ -7,14 +7,29 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { router } from '@inertiajs/react';
 import { useState } from 'react';
 
 export const MultiStepForm = () => {
     const [currentStep, setCurrentStep] = useState<number>(1);
     const [formData, setFormData] = useState({
-        url: '',
+        product_url: '',
         // Any other fields(questions)
     });
+
+    const handleFirstStep = (data: any) => {
+        setFormData((prev) => ({
+            ...prev,
+            ...data,
+        }));
+
+        router.post('/craft-post', data, {
+            preserveState: true,
+            preserveScroll: true,
+        });
+
+        setCurrentStep(currentStep + 1);
+    };
 
     const handleNextStep = (data: any) => {
         setFormData((prev) => ({
@@ -60,7 +75,7 @@ export const MultiStepForm = () => {
                 </CardHeader>
                 <CardContent>
                     {currentStep === 1 && (
-                        <StepOneForm onNext={handleNextStep} />
+                        <StepOneForm onNext={handleFirstStep} />
                     )}
                 </CardContent>
             </Card>

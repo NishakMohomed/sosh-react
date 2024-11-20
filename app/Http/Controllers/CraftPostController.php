@@ -15,4 +15,20 @@ class CraftPostController extends Controller
     {
         return Inertia::render('CraftPost');
     }
+
+    /**
+     * Store a new post url
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'product_url' => 'required|url|max:2048',
+        ]);
+
+        $request->user()->postUrls()->create($validated);
+
+        //  Dispatch the ScrapeData queue worker
+
+        return to_route('craft-post.index');
+    }
 }

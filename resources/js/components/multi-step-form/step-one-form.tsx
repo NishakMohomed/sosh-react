@@ -15,7 +15,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 const formSchema = z.object({
-    url: z
+    product_url: z
         .string()
         .min(1, { message: 'Please provide an url' })
         .url('Invalid URL format'),
@@ -29,7 +29,7 @@ export const StepOneForm = ({ onNext }: StepOneProps) => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            url: '',
+            product_url: '',
         },
     });
 
@@ -45,7 +45,7 @@ export const StepOneForm = ({ onNext }: StepOneProps) => {
                         <div className="grid gap-2">
                             <FormField
                                 control={form.control}
-                                name="url"
+                                name="product_url"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>
