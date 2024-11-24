@@ -18,10 +18,10 @@ class ProductImage extends Model
     protected $guarded = [];
 
     /**
-     * Get the url that owns the product image.
+     * Get the post data that owns the product image.
      */
-    public function postUrl(): BelongsTo
+    public function postData(): BelongsTo
     {
-        return $this->belongsTo(PostUrl::class);
+        return $this->belongsTo(PostData::class);
     }
 }

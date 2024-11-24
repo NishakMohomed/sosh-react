@@ -18,10 +18,10 @@ class PostImage extends Model
     protected $guarded = [];
 
     /**
-     * Get the url that owns the post image.
+     * Get the post data that owns the post image.
      */
-    public function postUrl(): BelongsTo
+    public function postData(): BelongsTo
     {
-        return $this->belongsTo(PostUrl::class);
+        return $this->belongsTo(PostData::class);
     }
 }

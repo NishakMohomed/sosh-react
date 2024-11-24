@@ -18,10 +18,10 @@ class BgRemovedProductImage extends Model
     protected $guarded = [];
 
     /**
-     * Get the url that owns the background removed product image.
+     * Get the post data that owns the background removed product image.
      */
-    public function postUrl(): BelongsTo
+    public function postData(): BelongsTo
     {
-        return $this->belongsTo(PostUrl::class);
+        return $this->belongsTo(PostData::class);
     }
 }

@@ -50,10 +50,10 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the post urls for the user.
+     * Get the product urls for the user.
      */
-    public function postUrls(): HasMany
+    public function productUrls(): HasMany
     {
-        return $this->hasMany(PostUrl::class);
+        return $this->hasMany(ProductUrl::class);
     }
 }
