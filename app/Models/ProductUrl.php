@@ -27,6 +27,14 @@ class ProductUrl extends Model
     }
 
     /**
+     * Get the post template that owns the product url.
+     */
+    public function postTemplate(): BelongsTo
+    {
+        return $this->belongsTo(PostTemplate::class);
+    }
+
+    /**
      * Get the post data for the product url.
      */
     public function postData(): HasMany

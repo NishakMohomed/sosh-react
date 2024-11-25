@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('product_urls', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('product_url');
+            $table->foreignUuid('post_template_id')->constrained()->noActionOnDelete();
             $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

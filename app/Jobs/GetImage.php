@@ -29,12 +29,22 @@ class GetImage implements ShouldQueue
      */
     public function handle(): void
     {
-        //  Step 1 : Get the post data from the post data table
-        $dbPostData = ProductUrl::find($this->product_url_id)->postData;
+        try{
+            //  Step 1 : Get all the post data from the post data table
+            $dbProductUrl = ProductUrl::with('postData')->find($this->product_url_id);
 
-        //  Step 2 : Loop through all the post data and get the original product images
-        foreach($dbPostData as $data){
-            $this->getOriginalProductImage($data);
+            if($dbProductUrl){
+                $dbPostData = $dbProductUrl->postData;
+            } else{
+                throw new Exception('Failed to get product images: post data is null');
+            }
+
+            //  Step 2 : Loop through all the post data and get the original product images
+            foreach($dbPostData as $data){
+                $this->getOriginalProductImage($data);
+            }
+        } catch(Exception $exception){
+            Log::error('Failed to get images: ' . $exception->getMessage());
         }
     }
 

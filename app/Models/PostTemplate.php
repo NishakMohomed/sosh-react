@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PostTemplate extends Model
 {
@@ -15,4 +16,12 @@ class PostTemplate extends Model
     * @var array<string>|bool
     */
     protected $guarded = [];
+
+    /**
+     * Get the product url for the post template.
+     */
+    public function productUrls(): HasMany
+    {
+        return $this->hasMany(ProductUrl::class);
+    }
 }
