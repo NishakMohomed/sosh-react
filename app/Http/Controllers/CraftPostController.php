@@ -25,7 +25,7 @@ class CraftPostController extends Controller
             'product_url' => 'required|url|max:2048',
         ]);
 
-        $request->user()->postUrls()->create($validated);
+        $request->user()->productUrls()->create($validated);
 
         //  Dispatch the ScrapeData queue worker
 

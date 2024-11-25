@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\PostUrl;
+use App\Models\ProductImage;
 use Exception;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,7 +18,7 @@ class RemoveImageBackground implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(public string $post_url_id)
+    public function __construct(public string $product_url_id)
     {
         //
     }
@@ -29,13 +29,15 @@ class RemoveImageBackground implements ShouldQueue
     public function handle(): void
     {
         try{
-            //  Step 1 : Get all original product images associated with the post url id
-            $dbPostUrl = PostUrl::find($this->post_url_id);
+            //  Step 1 : Get all the product images associated with the product url id
+            $dbProductImage = ProductImage::whereHas('postData', function($query){
+                $query->where('product_url_id', $this->product_url_id);
+            })->get();
 
             //  Step 2 : Loop the original image path and remove the bg and store the bg removed image
             //           back into the storage and insert image path into the table
-            foreach($dbPostUrl->productImages as $originalImage){
-                $this->removeImageBackground($originalImage->image_path);
+            foreach($dbProductImage as $image){
+                $this->removeImageBackground($image);
             }
 
         } catch(Exception $exception){
@@ -45,15 +47,15 @@ class RemoveImageBackground implements ShouldQueue
 
     /**
      * Remove image background using photoroom API
-     * @param string $image_path
+     * @param ProductImage $image
      * @return void
      */
-    protected function removeImageBackground(string $image_path): void
+    protected function removeImageBackground(ProductImage $image): void
     {
         try{
             $response = Http::withHeaders([
                 'X-Api-Key' => env('PHOTOROOM_API_KEY')
-            ])->attach('image_file', file_get_contents($image_path), basename($image_path))
+            ])->attach('image_file', file_get_contents($image->image_path), basename($image->image_path))
             ->post('https://sdk.photoroom.com/v1/segment');
 
             if(!$response->successful()){
@@ -64,7 +66,7 @@ class RemoveImageBackground implements ShouldQueue
 
             $extension = 'png';
             $uuid = (string) Str::uuid();
-            $filename = $uuid . '.' . $extension;
+            $filename = $image->id . $uuid . '.' . $extension;
 
             $storagePath = 'products/background-removed-photos/' . $filename;
             
@@ -72,9 +74,10 @@ class RemoveImageBackground implements ShouldQueue
 
             $url = Storage::url($storagePath);
 
-            $dbPostUrl = PostUrl::find($this->post_url_id);
+            //  Find the inverse of ProductImage table
+            $dbPostData = $image->postData;
 
-            $dbPostUrl->bgRemovedProductImages()->create([
+            $dbPostData->bgRemovedProductImage()->create([
                 'image_path' => $url
             ]);
 
